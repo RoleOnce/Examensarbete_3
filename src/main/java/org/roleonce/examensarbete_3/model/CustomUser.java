@@ -1,14 +1,23 @@
 package org.roleonce.examensarbete_3.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class CustomUser {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @NotBlank
+    @Size(min = 2, max = 50, message = "Username must be between 4-32 chars")
     private String username;
+    @NotBlank
+    @Size(min = 7, max = 80, message = "Password must be between 7-64 chars")
     private String password;
     private String email;
 

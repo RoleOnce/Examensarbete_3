@@ -15,12 +15,19 @@
             Password
             <input type="password" name="password" th:field="*{password}">
         </label>
+        <label>
+            Email
+            <input type="email" name="email" th:field="*{email}">
+        </label>
+
         <button type="submit">Register</button>
+
         <div th:if="${#fields.hasAnyErrors()}">
             <ul>
-                <li th:each="error : ${#fields.hasErrors()}" th:text="${error}"></li>
+                <li th:each="error : ${#fields.allErrors()}" th:text="${error}"></li>
             </ul>
         </div>
+
     </form>
 </body>
 </html>
