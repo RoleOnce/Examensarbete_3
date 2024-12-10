@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+// Hämta användare för att kunna logga in
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 

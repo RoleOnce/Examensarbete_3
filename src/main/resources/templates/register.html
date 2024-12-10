@@ -5,29 +5,36 @@
     <title>Register</title>
 </head>
 <body>
-    <h1>Register User</h1>
-    <form th:action="@{/register}" th:object="${customUser}" method="post">
-        <label>
-            Username
-            <input type="text" name="username" th:field="*{username}">
-        </label>
-        <label>
-            Password
-            <input type="password" name="password" th:field="*{password}">
-        </label>
-        <label>
-            Email
-            <input type="email" name="email" th:field="*{email}">
-        </label>
+<h1>Register User</h1>
+<form th:action="@{/register}" th:object="${customUser}" method="post">
+    <label>
+        Username
+        <input type="text" name="username" th:field="*{username}">
+    </label>
+    <label>
+        Password
+        <input type="password" name="password" th:field="*{password}">
+    </label>
+    <label>
+        Email
+        <input type="email" name="email" th:field="*{email}">
+    </label>
+    <label>
+        Role
+        <select th:field="*{userRole}" required>
+            <option value="USER">User</option>
+            <option value="ADMIN">Admin</option>
+        </select>
+    </label>
 
-        <button type="submit">Register</button>
+    <button type="submit">Register</button>
 
-        <div th:if="${#fields.hasAnyErrors()}">
-            <ul>
-                <li th:each="error : ${#fields.allErrors()}" th:text="${error}"></li>
-            </ul>
-        </div>
+    <div th:if="${#fields.hasAnyErrors()}">
+        <ul>
+            <li th:each="error : ${#fields.allErrors()}" th:text="${error}"></li>
+        </ul>
+    </div>
 
-    </form>
+</form>
 </body>
 </html>

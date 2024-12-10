@@ -1,11 +1,10 @@
 package org.roleonce.examensarbete_3.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.roleonce.examensarbete_3.authorities.UserRole;
 
 @Entity
 public class CustomUser {
@@ -20,15 +19,19 @@ public class CustomUser {
     @Size(min = 7, max = 80, message = "Password must be between 7-64 chars")
     private String password;
     private String email;
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Role is Required")
+    private UserRole userRole;
 
     // Constructors
     public CustomUser() {
 
     }
-    public CustomUser(String username, String password, String email) {
+    public CustomUser(String username, String password, String email, UserRole userRole) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.userRole = userRole;
     }
 
     // Getters and Setters
@@ -58,5 +61,13 @@ public class CustomUser {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 }

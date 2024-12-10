@@ -50,7 +50,9 @@ public class UserController {
                 new CustomUser(
                         customUser.getUsername(),
                         bCryptPasswordEncoder.encode(customUser.getPassword()),
-                        customUser.getEmail())
+                        customUser.getEmail(),
+                        customUser.getUserRole())
+
         );
 
         return "redirect:/";
