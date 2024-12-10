@@ -25,6 +25,8 @@ public enum UserRole {
         return permissions;
     }
 
+    // Denna metod skapar och returnerar en lista med behörigheter som används
+    // av Spring Security för att hantera användarens roller och rättigheter.
     public List<SimpleGrantedAuthority> getAuthorities() {
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();

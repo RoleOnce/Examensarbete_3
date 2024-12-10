@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+// Denna klass är en Spring-konfigurationsklass som definierar en PasswordEncoder-böna
+// som används för att kryptera och verifiera lösenord i applikationen.
 @Configuration
 public class PasswordConfig {
 

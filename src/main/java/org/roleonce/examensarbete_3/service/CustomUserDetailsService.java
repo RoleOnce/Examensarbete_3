@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
-// Hämta användare för att kunna logga in
+// Används i SecurityConfig
+// Hämtar användardata från DB för att kunna logga in
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -26,10 +27,16 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         CustomUser customUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
+        System.out.println("Authorities for user: " + customUser.getAuthorities());
+
         return new org.springframework.security.core.userdetails.User(
                 customUser.getUsername(),
                 customUser.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority(customUser.getEmail()))
+                customUser.isEnabled(),
+                customUser.isAccountNonExpired(),
+                customUser.isCredentialsNonExpired(),
+                customUser.isAccountNonLocked(),
+                customUser.getAuthorities()
         );
     }
 }

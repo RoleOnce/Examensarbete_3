@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### Important code ###
-src/main/resources/application.properties
+.env
