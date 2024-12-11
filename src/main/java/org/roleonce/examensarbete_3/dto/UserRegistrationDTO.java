@@ -14,6 +14,7 @@ public record UserRegistrationDTO(
         @Size(min = 7, max = 80, message = "Password must be between 7 and 80 characters")
         String password,
 
+        @NotBlank(message = "Email is required")
         @Email
         String email,
 

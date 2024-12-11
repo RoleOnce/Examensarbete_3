@@ -23,6 +23,7 @@ public class CustomUser {
     @Size(min = 7, max = 80, message = "Password must be between 7-64 chars")
     private String password;
     @Email
+    @NotBlank
     private String email;
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Role is Required")
