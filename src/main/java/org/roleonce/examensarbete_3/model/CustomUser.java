@@ -1,6 +1,7 @@
 package org.roleonce.examensarbete_3.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,6 +22,7 @@ public class CustomUser {
     @NotBlank
     @Size(min = 7, max = 80, message = "Password must be between 7-64 chars")
     private String password;
+    @Email
     private String email;
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Role is Required")
@@ -34,9 +36,10 @@ public class CustomUser {
     public CustomUser() {
 
     }
-    public CustomUser(String username, String password,UserRole userRole,  boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
+    public CustomUser(String username, String password, String email, UserRole userRole,  boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
         this.username = username;
         this.password = password;
+        this.email = email;
         this.userRole = userRole;
         this.isAccountNonExpired = isAccountNonExpired;
         this.isAccountNonLocked = isAccountNonLocked;

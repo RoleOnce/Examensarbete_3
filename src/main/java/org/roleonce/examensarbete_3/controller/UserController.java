@@ -1,7 +1,7 @@
 package org.roleonce.examensarbete_3.controller;
 
 import jakarta.validation.Valid;
-import org.roleonce.examensarbete_3.dto.UserDTO;
+import org.roleonce.examensarbete_3.dto.UserRegistrationDTO;
 import org.roleonce.examensarbete_3.authorities.UserRole;
 import org.roleonce.examensarbete_3.model.CustomUser;
 import org.roleonce.examensarbete_3.repository.UserRepository;
@@ -29,35 +29,32 @@ public class UserController {
 
     @GetMapping("/")
     public String index() {
+
         return "index";
     }
 
     @GetMapping("/register")
     public String registerUser(Model model) {
 
-        model.addAttribute("customUser", new CustomUser());
+        model.addAttribute("userDTO", new CustomUser());
 
         return "register";
     }
 
     @PostMapping("/register")
     public String registerUser(
-            @Valid @ModelAttribute(name = "userDTO") UserDTO userDTO,
+            @Valid @ModelAttribute(name = "userDTO") UserRegistrationDTO userDTO,
             BindingResult bindingResult,
             Model model
     ) {
+
         if (bindingResult.hasErrors()) {
-
             model.addAttribute("roles", UserRole.values());
-
             return "register";
         }
-
         if (userRepository.findByUsername(userDTO.username()).isPresent()) {
-
             model.addAttribute("usernameError", "Username is already taken");
             model.addAttribute("roles", UserRole.values());
-
             return "register";
         }
 
@@ -65,6 +62,7 @@ public class UserController {
             CustomUser newUser = new CustomUser(
                     userDTO.username(),
                     passwordEncoder.encode(userDTO.password()),
+                    userDTO.email(),
                     userDTO.userRole() != null? userDTO.userRole() : UserRole.USER,
                     true,
                     true,
@@ -72,13 +70,12 @@ public class UserController {
                     true
             );
 
+            System.out.println("User named: '" + userDTO.username() + "' created");
             userRepository.save(newUser);
 
         } catch (DataIntegrityViolationException e) {
-
             model.addAttribute("usernameError", "Username is already taken.");
             model.addAttribute("roles", UserRole.values());
-
             return "register";
         }
         return "redirect:/";

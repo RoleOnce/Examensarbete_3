@@ -29,18 +29,21 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/register", "/login").permitAll()
                         .requestMatchers("/logout").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**", "/output.css").permitAll()
+                        .requestMatchers("/output.css").permitAll()
+                        //.requestMatchers("/css/**", "/js/**", "/images/**", "/static/**", "/output.css").permitAll()
                         .anyRequest().authenticated())
 
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
                         .loginPage("/login")
                 )
 
+                // Tar med säkerhet bort cookies, autentiseringsinfo och
+                // sessionen när användaren loggar ut
                 .logout(logoutConfigurer -> logoutConfigurer
                         .invalidateHttpSession(true)
-                        .clearAuthentication(true)      // TODO - Should Clear Authentication?
+                        .clearAuthentication(true)
                         .deleteCookies("remember-me", "JSESSIONID")
-                        .logoutUrl("/custom-logout")           // TODO - Endpoint for logging out?
+                        .logoutUrl("/custom-logout") // Används i logout.html som >>th:action="@{/custom-logout}"<<
                 )
 
                 .rememberMe(rememberMeConfigurer -> rememberMeConfigurer
@@ -48,8 +51,7 @@ public class SecurityConfig {
                         .key("someSecureKey")
                         .userDetailsService(customUserDetailsService)
                         .rememberMeParameter("remember-me")
-                )
-        ;
+                );
 
         return http.build();
     }
