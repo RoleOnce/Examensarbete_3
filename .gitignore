@@ -38,4 +38,3 @@ out/
 
 ### Sensitive Information ###
 .env
-build.gradle
