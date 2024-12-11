@@ -1,6 +1,7 @@
 package org.roleonce.examensarbete_3.controller;
 
 import jakarta.validation.Valid;
+import org.roleonce.examensarbete_3.dao.UserDAO;
 import org.roleonce.examensarbete_3.dto.UserRegistrationDTO;
 import org.roleonce.examensarbete_3.authorities.UserRole;
 import org.roleonce.examensarbete_3.model.CustomUser;
@@ -18,13 +19,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
 
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserDAO userDAO;
 
     @Autowired
-    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+    public UserController(PasswordEncoder passwordEncoder, UserDAO userDAO) {
         this.passwordEncoder = passwordEncoder;
+        this.userDAO = userDAO;
     }
 
     @GetMapping("/")
@@ -52,7 +53,7 @@ public class UserController {
             model.addAttribute("roles", UserRole.values());
             return "register";
         }
-        if (userRepository.findByUsername(userDTO.username()).isPresent()) {
+        if (userDAO.findByUsername(userDTO.username()).isPresent()) {
             model.addAttribute("usernameError", "Username is already taken");
             model.addAttribute("roles", UserRole.values());
             return "register";
@@ -71,7 +72,7 @@ public class UserController {
             );
 
             System.out.println("User named: '" + userDTO.username() + "' created");
-            userRepository.save(newUser);
+            userDAO.save(newUser);
 
         } catch (DataIntegrityViolationException e) {
             model.addAttribute("usernameError", "Username is already taken.");
