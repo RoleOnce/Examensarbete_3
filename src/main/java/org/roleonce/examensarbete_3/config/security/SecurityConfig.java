@@ -1,6 +1,6 @@
-package org.roleonce.examensarbete_3.config;
+package org.roleonce.examensarbete_3.config.security;
 
-import org.roleonce.examensarbete_3.service.CustomUserDetailsService;
+import org.roleonce.examensarbete_3.config.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,8 +27,8 @@ public class SecurityConfig {
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/register", "/login", "/upload").permitAll()
-                        .requestMatchers("/logout").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/", "/register", "/login").permitAll()
+                        .requestMatchers("/logout", "/upload").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/output.css").permitAll()
                         //.requestMatchers("/css/**", "/js/**", "/images/**", "/static/**", "/output.css").permitAll()
                         .anyRequest().authenticated())

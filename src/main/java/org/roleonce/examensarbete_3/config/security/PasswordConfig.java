@@ -1,4 +1,4 @@
-package org.roleonce.examensarbete_3.config;
+package org.roleonce.examensarbete_3.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

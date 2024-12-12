@@ -15,6 +15,11 @@ public class Advertisement {
     private String type;
     @Lob
     private byte[] image;
+    private String base64Image;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private CustomUser owner;
 
     public Advertisement() {
 
@@ -73,5 +78,21 @@ public class Advertisement {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public String getBase64Image() {
+        return base64Image;
+    }
+
+    public void setBase64Image(String base64Image) {
+        this.base64Image = base64Image;
+    }
+
+    public CustomUser getOwner() {
+        return owner;
+    }
+
+    public void setOwner(CustomUser customUser) {
+        this.owner = customUser;
     }
 }

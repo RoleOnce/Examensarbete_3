@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import org.roleonce.examensarbete_3.authorities.UserRole;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,6 +34,9 @@ public class CustomUser {
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Advertisement> advertisements = new ArrayList<>();
 
     // Constructors
     public CustomUser() {
@@ -124,5 +128,13 @@ public class CustomUser {
 
     public List<String> getListOfPermissions() {
         return userRole.getPermissions();
+    }
+
+    public List<Advertisement> getAdvertisements() {
+        return advertisements;
+    }
+
+    public void setAdvertisements(List<Advertisement> advertisements) {
+        this.advertisements = advertisements;
     }
 }

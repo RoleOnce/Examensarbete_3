@@ -8,7 +8,9 @@ import org.roleonce.examensarbete_3.model.Advertisement;
 import org.roleonce.examensarbete_3.model.CustomUser;
 import org.roleonce.examensarbete_3.repository.ImageRepository;
 import org.roleonce.examensarbete_3.repository.UserRepository;
+import org.roleonce.examensarbete_3.service.AdvertisementService;
 import org.roleonce.examensarbete_3.service.ImageService;
+import org.roleonce.examensarbete_3.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -29,12 +32,16 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final UserDAO userDAO;
     private final ImageService imageService;
+    private final UserService userService;
+    private final AdvertisementService advertisementService;
 
     @Autowired
-    public UserController(PasswordEncoder passwordEncoder, UserDAO userDAO, ImageService imageService) {
+    public UserController(PasswordEncoder passwordEncoder, UserDAO userDAO, ImageService imageService, UserService userService, AdvertisementService advertisementService) {
         this.passwordEncoder = passwordEncoder;
         this.userDAO = userDAO;
         this.imageService = imageService;
+        this.userService = userService;
+        this.advertisementService = advertisementService;
     }
 
     @GetMapping("/")
@@ -97,19 +104,57 @@ public class UserController {
         return "upload";
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadImage(
+    @PostMapping("/advertisement/add")
+    public String createAdvertisement(
             @RequestParam("file") MultipartFile file,
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,
-            @RequestParam("description") String description) {
+            @RequestParam("description") String description,
+            @ModelAttribute Advertisement advertisement) {
+
+        CustomUser loggedInUser = userService.getLoggedInUser(); // Hämta inloggad användare
+
+        if (loggedInUser == null) {
+            return "error"; // Returnera fel-sida om användaren inte är inloggad
+        }
+
         try {
-            imageService.saveImage(file, firstName, lastName, description);
-            return ResponseEntity.ok("Image uploaded successfully!");
+            // Spara bilden och skapa en annons
+            advertisement.setFirstName(firstName);
+            advertisement.setLastName(lastName);
+            advertisement.setDescription(description);
+            advertisement.setOwner(loggedInUser); // Koppla annonsen till användaren
+            advertisement.setImage(file.getBytes()); // Konvertera bilden till byte[]
+            advertisement.setType(file.getContentType()); // Ange MIME-typ
+
+            advertisementService.saveAdvertisement(advertisement); // Spara annonsen
+            return "redirect:/advertisements"; // Omdirigera till annonslistan
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image");
+            e.printStackTrace();
+            return "error"; // Returnera fel-sida vid problem med filuppladdningen
         }
     }
+
+    @GetMapping("/advertisements")
+    public String getAdvertisementsForUser(Model model) {
+        CustomUser loggedInUser = userService.getLoggedInUser();
+        if (loggedInUser == null) {
+            return "error";
+        }
+
+        List<Advertisement> advertisements = advertisementService.getAdvertisementsByUser(loggedInUser);
+        for (Advertisement ad : advertisements) {
+            if (ad.getImage() != null) {
+                String base64Image = Base64.getEncoder().encodeToString(ad.getImage());
+                ad.setBase64Image(base64Image);
+            }
+        }
+
+        model.addAttribute("advertisements", advertisements);
+        return "advertisements"; // Visa annonser på sidan
+    }
+
+
 
     @GetMapping("/advertisement/{id}")
     public String getAdvertisementPage(@PathVariable Long id, Model model) {
