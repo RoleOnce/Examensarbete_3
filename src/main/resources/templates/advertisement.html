@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Advertisement</title>
+</head>
+<body>
+<h1>Advertisement Details</h1>
+<div>
+    <p><strong>First Name:</strong> <span th:text="${advertisement.firstName}"></span></p>
+    <p><strong>Last Name:</strong> <span th:text="${advertisement.lastName}"></span></p>
+    <p><strong>Description:</strong> <span th:text="${advertisement.description}"></span></p>
+
+    <!-- Visa bilden -->
+    <div th:if="${base64Image}">
+        <img th:src="${base64Image}" alt="Advertisement Image" style="max-width: 500px;">
+    </div>
+    <div th:if="${base64Image == null}">
+        <p>No image available.</p>
+    </div>
+</div>
+</body>
+</html>

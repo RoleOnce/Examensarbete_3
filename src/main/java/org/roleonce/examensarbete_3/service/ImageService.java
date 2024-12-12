@@ -14,7 +14,7 @@ public class ImageService {
     @Autowired
     private ImageRepository imageRepository;
 
-    public Advertisement saveImage(MultipartFile file, String firstName, String lastName, String description) throws IOException {
+    public void saveImage(MultipartFile file, String firstName, String lastName, String description) throws IOException {
         String type = file.getContentType();
         byte[] bytes = file.getBytes();
 
@@ -25,7 +25,11 @@ public class ImageService {
         advertisement.setType(type);
         advertisement.setImage(bytes);
 
-        return imageRepository.save(advertisement);
+        imageRepository.save(advertisement);
+    }
+
+    public Advertisement getAdvertisementById(Long id) {
+        return imageRepository.findById(id).orElse(null);
     }
 
 }

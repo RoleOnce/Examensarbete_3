@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.roleonce.examensarbete_3.dao.UserDAO;
 import org.roleonce.examensarbete_3.dto.UserRegistrationDTO;
 import org.roleonce.examensarbete_3.authorities.UserRole;
+import org.roleonce.examensarbete_3.model.Advertisement;
 import org.roleonce.examensarbete_3.model.CustomUser;
 import org.roleonce.examensarbete_3.repository.ImageRepository;
 import org.roleonce.examensarbete_3.repository.UserRepository;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Base64;
 
 @Controller
 public class UserController {
@@ -71,14 +73,14 @@ public class UserController {
                     userDTO.username(),
                     passwordEncoder.encode(userDTO.password()),
                     userDTO.email(),
-                    userDTO.userRole() != null? userDTO.userRole() : UserRole.USER,
+                    userDTO.userRole() != null ? userDTO.userRole() : UserRole.USER,
                     true,
                     true,
                     true,
                     true
             );
 
-            System.out.println("User named: '" + userDTO.username() + "' created");
+            System.out.println("User named: '" + userDTO.username() + "' has been registered");
             userDAO.save(newUser);
 
         } catch (DataIntegrityViolationException e) {
@@ -91,7 +93,8 @@ public class UserController {
 
     @GetMapping("/upload")
     public String showUploadForm() {
-        return "upload"; // Renderar upload.html
+
+        return "upload";
     }
 
     @PostMapping("/upload")
@@ -108,5 +111,23 @@ public class UserController {
         }
     }
 
+    @GetMapping("/advertisement/{id}")
+    public String getAdvertisementPage(@PathVariable Long id, Model model) {
+        Advertisement advertisement = imageService.getAdvertisementById(id);
+        if (advertisement == null) {
+            return "error";
+        }
+
+        // Konvertera bilden till Base64
+        String base64Image = advertisement.getImage() != null
+                ? "data:" + advertisement.getType() + ";base64," +
+                Base64.getEncoder().encodeToString(advertisement.getImage())
+                : null;
+
+        model.addAttribute("advertisement", advertisement);
+        model.addAttribute("base64Image", base64Image);
+
+        return "advertisement";
+    }
 
 }

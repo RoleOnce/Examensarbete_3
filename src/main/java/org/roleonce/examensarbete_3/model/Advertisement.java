@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 public class Advertisement {
 
+    // TODO - Ta bort lastName/firstName?? Istället ha inloggade "username" (?)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

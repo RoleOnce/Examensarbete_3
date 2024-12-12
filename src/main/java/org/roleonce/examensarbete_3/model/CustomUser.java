@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 public class CustomUser {
 
+    // TODO - Lägga till FirstName/LastName??? (vid registrering)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
