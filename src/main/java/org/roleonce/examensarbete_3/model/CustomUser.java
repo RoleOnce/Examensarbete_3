@@ -137,4 +137,5 @@ public class CustomUser {
     public void setAdvertisements(List<Advertisement> advertisements) {
         this.advertisements = advertisements;
     }
+
 }

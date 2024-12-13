@@ -95,4 +95,5 @@ public class Advertisement {
     public void setOwner(CustomUser customUser) {
         this.owner = customUser;
     }
+
 }

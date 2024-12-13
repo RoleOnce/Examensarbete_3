@@ -11,10 +11,14 @@ public class UserService {
 
     // Hämta inloggad användare från Spring Security
     public CustomUser getLoggedInUser() {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
             return ((CustomUserDetails) authentication.getPrincipal()).getCustomUser();
         }
+
         return null; // Om ingen användare är inloggad
     }
+
 }

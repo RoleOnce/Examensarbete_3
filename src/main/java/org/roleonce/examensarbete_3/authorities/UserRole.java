@@ -22,6 +22,7 @@ public enum UserRole {
     }
 
     public List<String> getPermissions() {
+
         return permissions;
     }
 
@@ -36,4 +37,5 @@ public enum UserRole {
 
         return authorities;
     }
+
 }
