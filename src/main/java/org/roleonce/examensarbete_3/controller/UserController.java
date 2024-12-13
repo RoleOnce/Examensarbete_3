@@ -25,12 +25,6 @@ public class UserController {
         this.userDAO = userDAO;
     }
 
-    @GetMapping("/")
-    public String index() {
-
-        return "index";
-    }
-
     @GetMapping("/register")
     public String registerUser(Model model) {
 

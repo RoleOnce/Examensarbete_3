@@ -15,18 +15,21 @@ public class AdvertisementService {
     @Autowired
     private AdvertisementRepository advertisementRepository;
 
+    @Transactional
+    public void saveAdvertisement(Advertisement advertisement) {
+        advertisementRepository.save(advertisement);
+    }
 
     @Transactional
     public List<Advertisement> getAdvertisementsByUser(CustomUser user) {
         return advertisementRepository.findByOwner(user);
     }
 
-    @Transactional
-    public void saveAdvertisement(Advertisement advertisement) {
-        advertisementRepository.save(advertisement);
-    }
-
     public Advertisement getAdvertisementById(Long id) {
         return advertisementRepository.findById(id).orElse(null);
+    }
+
+    public List<Advertisement> getAllAdvertisements() {
+        return advertisementRepository.findAll();
     }
 }

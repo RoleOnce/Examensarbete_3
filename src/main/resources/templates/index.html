@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{./output.css}" rel="stylesheet">
-    <title>Home Page</title>
+    <title>Homepage</title>
 </head>
 <body>
-    <h1 class="text-3xl font-bold bg-cyan-400">
-        Welcome to Home Page brooooodie!
-    </h1>
+<h1>All Advertisements</h1>
+<div th:each="ad : ${advertisements}">
+    <h3 th:text="${ad.firstName} + ' ' + ${ad.lastName}"></h3>
+    <p th:text="${ad.description}"></p>
+    <img th:if="${ad.base64Image != null}"
+         th:src="'data:' + ${ad.type} + ';base64,' + ${ad.base64Image}"
+         alt="Ad Image" style="max-width: 200px;">
+</div>
 </body>
 </html>

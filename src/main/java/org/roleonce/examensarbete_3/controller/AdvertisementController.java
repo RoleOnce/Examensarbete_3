@@ -24,6 +24,22 @@ public class AdvertisementController {
         this.advertisementService = advertisementService;
     }
 
+    @GetMapping("/")
+    public String homePage(Model model) {
+
+        List<Advertisement> advertisements = advertisementService.getAllAdvertisements();
+
+        for (Advertisement ad : advertisements) {
+            if (ad.getImage() != null) {
+                String base64Image = Base64.getEncoder().encodeToString(ad.getImage());
+                ad.setBase64Image(base64Image);
+            }
+        }
+
+        model.addAttribute("advertisements", advertisements);
+        return "index";
+    }
+
     @GetMapping("/upload")
     public String showUploadForm() {
 
