@@ -11,6 +11,8 @@ public class Advertisement {
     private Long id;
     private String firstName;
     private String lastName;
+    private String title;
+    private int price;
     private String description;
     private String type;
     @Lob
@@ -24,9 +26,11 @@ public class Advertisement {
     public Advertisement() {
 
     }
-    public Advertisement(String firstName, String lastName, String description, String type, byte[] image) {
+    public Advertisement(String firstName, String lastName, String title, int price, String description, String type, byte[] image) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.title = title;
+        this.price = price;
         this.description = description;
         this.type = type;
         this.image = image;
@@ -54,6 +58,22 @@ public class Advertisement {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public String getDescription() {

@@ -3,6 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
+    <style>
+        .ad-card {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .ad-card:hover {
+            transform: scale(1.02);
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
 <a sec:authorize="isAnonymous()" th:href="@{/login}">Sign In</a>
@@ -11,12 +25,14 @@
     Logged in as: <span th:text="${#authentication.name}"></span>
 </p>
 <h1>All Advertisements</h1>
-<div th:each="ad : ${advertisements}">
-    <h3 th:text="${ad.firstName} + ' ' + ${ad.lastName}"></h3>
-    <p th:text="${ad.description}"></p>
+<div th:each="ad : ${advertisements}"
+     class="ad-card"
+     th:onclick="|window.location.href='/advertisement/' + ${ad.id}|">
+    <h3 th:text="${ad.title}"></h3>
+    <p th:text="${ad.price} + ' ' + kr"></p>
     <img th:if="${ad.base64Image != null}"
          th:src="'data:' + ${ad.type} + ';base64,' + ${ad.base64Image}"
-         alt="Ad Image" style="max-width: 500px;">
+         alt="Ad Image" style="max-width: 200px;">
 </div>
 </body>
 </html>

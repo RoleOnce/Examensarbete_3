@@ -7,8 +7,9 @@
 <body>
 <h1>Advertisement Details</h1>
 <div>
-    <p><strong>First Name:</strong> <span th:text="${advertisement.firstName}"></span></p>
-    <p><strong>Last Name:</strong> <span th:text="${advertisement.lastName}"></span></p>
+    <p><strong>Seller Name:</strong> <span th:text="${advertisement.firstName} + ' ' + ${advertisement.lastName}"></span></p>
+    <p><strong>Title:</strong> <span th:text="${advertisement.title}"></span></p>
+    <p><strong>Price:</strong> <span th:text="${advertisement.price} + ' ' + kr"></span></p>
     <p><strong>Description:</strong> <span th:text="${advertisement.description}"></span></p>
 
     <!-- Visa bilden -->
@@ -18,6 +19,7 @@
     <div th:if="${base64Image == null}">
         <p>No image available.</p>
     </div>
+    <a th:href="@{/}">Back to Homepage</a>
 </div>
 </body>
 </html>
