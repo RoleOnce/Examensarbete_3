@@ -100,11 +100,12 @@ public class AdvertisementController {
     @GetMapping("/advertisement/{id}")
     public String getAdvertisementPage(@PathVariable Long id, Model model) {
 
-        String username = userService.getUsername(id);
         Advertisement advertisement = advertisementService.getAdvertisementById(id);
         if (advertisement == null) {
             return "error";
         }
+
+        String username = userService.getUsernameByAdvertisementId(id);
 
         // Konvertera bilden till Base64
         String base64Image = advertisement.getImage() != null
