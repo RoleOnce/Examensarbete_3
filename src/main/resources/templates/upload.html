@@ -6,16 +6,8 @@
 </head>
 <body>
 <h1>Create Advertisement</h1>
-<form action="/advertisement/add" method="post" enctype="multipart/form-data">
+<form action="/upload" method="post" enctype="multipart/form-data">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-    <label>
-        First Name:
-        <input type="text" name="firstName" required>
-    </label>
-    <label>
-        Last Name:
-        <input type="text" name="lastName" required>
-    </label>
     <label>
         Title:
         <input type="text" name="title" required>

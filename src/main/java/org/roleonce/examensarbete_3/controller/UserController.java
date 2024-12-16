@@ -52,6 +52,8 @@ public class UserController {
 
         try {
             CustomUser newUser = new CustomUser(
+                    userDTO.firstName(),
+                    userDTO.lastName(),
                     userDTO.username(),
                     passwordEncoder.encode(userDTO.password()),
                     userDTO.email(),

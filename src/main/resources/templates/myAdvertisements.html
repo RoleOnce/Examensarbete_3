@@ -7,7 +7,7 @@
 <body>
 <h1>My Advertisements</h1>
 <div th:each="ad : ${advertisements}">
-    <h3 th:text="${ad.firstName} + ' ' + ${ad.lastName}"></h3>
+    <h3 th:text="${ad.title}"></h3>
     <p th:text="${ad.description}"></p>
     <img th:src="'data:' + ${ad.type} + ';base64,' + ${ad.base64Image}"
          alt="Ad Image" style="max-width: 200px;">

@@ -19,6 +19,12 @@ public class CustomUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @NotBlank
+    @Size(min = 3, max = 50, message = "First name must at least have 3 chars")
+    private String firstName;
+    @NotBlank
+    @Size(min = 3, max = 50, message = "Last name must at least have 3 chars")
+    private String lastName;
+    @NotBlank
     @Size(min = 2, max = 50, message = "Username must be between 4-32 chars")
     private String username;
     @NotBlank
@@ -42,7 +48,9 @@ public class CustomUser {
     public CustomUser() {
 
     }
-    public CustomUser(String username, String password, String email, UserRole userRole,  boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
+    public CustomUser(String firstName, String lastName, String username, String password, String email, UserRole userRole,  boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -56,6 +64,22 @@ public class CustomUser {
     // Getters and Setters
     public long getId() {
         return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getUsername() {

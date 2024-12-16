@@ -46,11 +46,11 @@ public class AdvertisementController {
         return "upload";
     }
 
-    @PostMapping("/advertisement/add")
+    @PostMapping("/upload")
     public String createAdvertisement(
             @RequestParam("file") MultipartFile file,
-            @RequestParam("firstName") String firstName,
-            @RequestParam("lastName") String lastName,
+            //@RequestParam("firstName") String firstName,
+            //@RequestParam("lastName") String lastName,
             @RequestParam("description") String description,
             @ModelAttribute Advertisement advertisement) {
 
@@ -62,8 +62,8 @@ public class AdvertisementController {
 
         try {
 
-            advertisement.setFirstName(firstName);
-            advertisement.setLastName(lastName);
+            //advertisement.setFirstName(firstName);
+            //advertisement.setLastName(lastName);
             advertisement.setDescription(description);
             advertisement.setOwner(loggedInUser); // Koppla annonsen till användaren
             advertisement.setImage(file.getBytes()); // Konvertera bilden till byte[]
@@ -94,11 +94,13 @@ public class AdvertisementController {
         }
 
         model.addAttribute("advertisements", advertisements);
-        return "advertisements"; // Visar annonser för inloggad användare
+        return "myAdvertisements"; // Visar annonser för inloggad användare
     }
 
     @GetMapping("/advertisement/{id}")
     public String getAdvertisementPage(@PathVariable Long id, Model model) {
+
+        String username = userService.getUsername(id);
         Advertisement advertisement = advertisementService.getAdvertisementById(id);
         if (advertisement == null) {
             return "error";
@@ -110,6 +112,7 @@ public class AdvertisementController {
                 Base64.getEncoder().encodeToString(advertisement.getImage())
                 : null;
 
+        model.addAttribute("username", username);
         model.addAttribute("advertisement", advertisement);
         model.addAttribute("base64Image", base64Image);
 

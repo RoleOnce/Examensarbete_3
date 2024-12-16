@@ -21,4 +21,13 @@ public class UserService {
         return null; // Om ingen användare är inloggad
     }
 
+    public String getUsername(Long user) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+            return ((CustomUserDetails) authentication.getPrincipal()).getUsername();
+        }
+        return null;
+    }
+
 }

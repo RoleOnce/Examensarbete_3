@@ -6,6 +6,15 @@ import jakarta.validation.constraints.Size;
 import org.roleonce.examensarbete_3.authorities.UserRole;
 
 public record UserRegistrationDTO(
+
+        @NotBlank
+        @Size(min = 3, max = 50, message = "First name must at least have 3 chars")
+        String firstName,
+
+        @NotBlank
+        @Size(min = 3, max = 50, message = "Last name must at least have 3 chars")
+        String lastName,
+
         @NotBlank(message = "Username is required")
         @Size(min = 4, max = 50, message = "Username must be between 4 and 50 characters")
         String username,
@@ -19,5 +28,7 @@ public record UserRegistrationDTO(
         String email,
 
         UserRole userRole
+
 ) {
+
 }

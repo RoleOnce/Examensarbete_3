@@ -8,6 +8,14 @@
 <h1>Register User</h1>
 <form th:action="@{/register}" th:object="${userDTO}" method="post">
     <label>
+        First Name
+        <input type="text" name="firstName" th:field="*{firstName}">
+    </label>
+    <label>
+        Last Name
+        <input type="text" name="lastName" th:field="*{lastName}">
+    </label>
+    <label>
         Username
         <input type="text" name="username" th:field="*{username}">
     </label>

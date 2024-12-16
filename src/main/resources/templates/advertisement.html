@@ -7,7 +7,8 @@
 <body>
 <h1>Advertisement Details</h1>
 <div>
-    <p><strong>Seller Name:</strong> <span th:text="${advertisement.firstName} + ' ' + ${advertisement.lastName}"></span></p>
+
+    <p><strong>Seller:</strong> <span th:text="${username}"></span></p>
     <p><strong>Title:</strong> <span th:text="${advertisement.title}"></span></p>
     <p><strong>Price:</strong> <span th:text="${advertisement.price} + ' ' + kr"></span></p>
     <p><strong>Description:</strong> <span th:text="${advertisement.description}"></span></p>
