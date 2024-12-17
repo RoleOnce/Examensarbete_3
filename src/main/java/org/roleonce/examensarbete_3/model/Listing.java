@@ -3,7 +3,7 @@ package org.roleonce.examensarbete_3.model;
 import jakarta.persistence.*;
 
 @Entity
-public class Advertisement {
+public class Listing {
 
     // TODO - Ta bort lastName/firstName?? Istället ha inloggade "username" (?)
     @Id
@@ -21,10 +21,10 @@ public class Advertisement {
     @JoinColumn(name = "user_id", nullable = false)
     private CustomUser owner;
 
-    public Advertisement() {
+    public Listing() {
 
     }
-    public Advertisement(String title, int price, String description, String type, byte[] image) {
+    public Listing(String title, int price, String description, String type, byte[] image) {
         this.title = title;
         this.price = price;
         this.description = description;

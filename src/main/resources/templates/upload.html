@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create Advertisement</title>
+    <title>Create a listing</title>
 </head>
 <body>
-<h1>Create Advertisement</h1>
+<h1>Create a listing</h1>
 <form action="/upload" method="post" enctype="multipart/form-data">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
     <label>
@@ -24,7 +24,7 @@
         Upload Image:
         <input type="file" name="file" accept="image/*" required>
     </label>
-    <button type="submit">Create Advertisement</button>
+    <button type="submit">Post listing</button>
 </form>
 
 </body>

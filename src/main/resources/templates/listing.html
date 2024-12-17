@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listing Details</title>
+</head>
+<body>
+<h1>Listing Details</h1>
+<div>
+
+    <p><strong>Seller:</strong> <span th:text="${username}"></span></p>
+    <p><strong>Title:</strong> <span th:text="${listing.title}"></span></p>
+    <p><strong>Price:</strong> <span th:text="${listing.price} + ' ' + kr"></span></p>
+    <p><strong>Description:</strong> <span th:text="${listing.description}"></span></p>
+
+    <!-- Visa bilden -->
+    <div th:if="${base64Image}">
+        <img th:src="${base64Image}" alt="Listing Image" style="max-width: 500px;">
+    </div>
+    <div th:if="${base64Image == null}">
+        <p>No image available.</p>
+    </div>
+    <a th:href="@{/}">Back to Homepage</a>
+</div>
+</body>
+</html>

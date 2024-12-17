@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Listings</title>
+</head>
+<body>
+<h1>My Listings</h1>
+<div th:each="x : ${listings}">
+    <h3 th:text="${x.title}"></h3>
+    <p th:text="${x.description}"></p>
+    <img th:src="'data:' + ${x.type} + ';base64,' + ${x.base64Image}"
+         alt="Ad Image" style="max-width: 200px;">
+</div>
+</body>
+</html>

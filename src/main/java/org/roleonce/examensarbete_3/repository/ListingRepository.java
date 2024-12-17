@@ -1,6 +1,6 @@
 package org.roleonce.examensarbete_3.repository;
 
-import org.roleonce.examensarbete_3.model.Advertisement;
+import org.roleonce.examensarbete_3.model.Listing;
 import org.roleonce.examensarbete_3.model.CustomUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AdvertisementRepository extends JpaRepository<Advertisement, Long> {
+public interface ListingRepository extends JpaRepository<Listing, Long> {
 
-    List<Advertisement> findByOwner(CustomUser owner);
+    List<Listing> findByOwner(CustomUser owner);
 
 }
 

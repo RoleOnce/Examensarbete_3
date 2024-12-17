@@ -1,9 +1,9 @@
 package org.roleonce.examensarbete_3.service;
 
 import org.roleonce.examensarbete_3.config.CustomUserDetails;
-import org.roleonce.examensarbete_3.model.Advertisement;
+import org.roleonce.examensarbete_3.model.Listing;
 import org.roleonce.examensarbete_3.model.CustomUser;
-import org.roleonce.examensarbete_3.repository.AdvertisementRepository;
+import org.roleonce.examensarbete_3.repository.ListingRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    AdvertisementRepository advertisementRepository;
+    ListingRepository listingRepository;
 
-    public UserService(AdvertisementRepository advertisementRepository) {
-        this.advertisementRepository = advertisementRepository;
+    public UserService(ListingRepository listingRepository) {
+        this.listingRepository = listingRepository;
     }
 
     // Hämta inloggad användare från Spring Security
@@ -29,11 +29,11 @@ public class UserService {
         return null; // Om ingen användare är inloggad
     }
 
-    public String getUsernameByAdvertisementId(Long adId) {
+    public String getUsernameByListingId(Long adId) {
 
-        Advertisement advertisement = advertisementRepository.findById(adId).orElseThrow(() -> new IllegalArgumentException("Advertisement not found"));
+        Listing listing = listingRepository.findById(adId).orElseThrow(() -> new IllegalArgumentException("Advertisement not found"));
 
-        return advertisement.getOwner().getUsername();
+        return listing.getOwner().getUsername();
     }
 
 }

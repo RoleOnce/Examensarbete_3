@@ -42,7 +42,7 @@ public class CustomUser {
     private boolean isEnabled;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Advertisement> advertisements = new ArrayList<>();
+    private List<Listing> listings = new ArrayList<>();
 
     // Constructors
     public CustomUser() {
@@ -154,12 +154,12 @@ public class CustomUser {
         return userRole.getPermissions();
     }
 
-    public List<Advertisement> getAdvertisements() {
-        return advertisements;
+    public List<Listing> getAdvertisements() {
+        return listings;
     }
 
-    public void setAdvertisements(List<Advertisement> advertisements) {
-        this.advertisements = advertisements;
+    public void setAdvertisements(List<Listing> listings) {
+        this.listings = listings;
     }
 
 }
