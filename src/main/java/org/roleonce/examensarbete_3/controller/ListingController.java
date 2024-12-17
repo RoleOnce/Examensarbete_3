@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -30,9 +31,13 @@ public class ListingController {
         List<Listing> listings = listingService.getAllListings();
 
         for (Listing ad : listings) {
-            if (ad.getImage() != null) {
-                String base64Image = Base64.getEncoder().encodeToString(ad.getImage());
-                ad.setBase64Image(base64Image);
+            if (ad.getImages() != null && !ad.getImages().isEmpty()) {
+                List<String> base64Images = new ArrayList<>();
+                for (byte[] b : ad.getImages()) {
+                    String base64 = Base64.getEncoder().encodeToString(b);
+                    base64Images.add(base64);
+                }
+                ad.setBase64Image(base64Images);
             }
         }
 
@@ -48,7 +53,7 @@ public class ListingController {
 
     @PostMapping("/upload")
     public String createListing(
-            @RequestParam("file") MultipartFile file,
+            @RequestParam("files") List<MultipartFile> files,
             @RequestParam("description") String description,
             @ModelAttribute Listing listing) {
 
@@ -59,11 +64,16 @@ public class ListingController {
         }
 
         try {
-
             listing.setDescription(description);
             listing.setOwner(loggedInUser); // Koppla annonsen till användaren
-            listing.setImage(file.getBytes()); // Konvertera bilden till byte[]
-            listing.setType(file.getContentType()); // Ange MIME-typ
+
+            List<byte[]> imageList = new ArrayList<>();
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    imageList.add(file.getBytes());
+                }
+            }
+            listing.setImages(imageList);
 
             listingService.saveListing(listing);
             return "redirect:/";
@@ -83,9 +93,13 @@ public class ListingController {
 
         List<Listing> listings = listingService.getListingByUser(loggedInUser);
         for (Listing ad : listings) {
-            if (ad.getImage() != null) {
-                String base64Image = Base64.getEncoder().encodeToString(ad.getImage());
-                ad.setBase64Image(base64Image);
+            if (ad.getImages() != null) {
+                List<String> base64Images = new ArrayList<>();
+                for (byte[] b : ad.getImages()) {
+                    String base64 = Base64.getEncoder().encodeToString(b);
+                    base64Images.add(base64);
+                }
+                ad.setBase64Image(base64Images);
             }
         }
 
@@ -103,17 +117,22 @@ public class ListingController {
 
         String username = userService.getUsernameByListingId(id);
 
-        // Konvertera bilden till Base64
-        String base64Image = listing.getImage() != null
-                ? "data:" + listing.getType() + ";base64," +
-                Base64.getEncoder().encodeToString(listing.getImage())
-                : null;
+        // Konvertera varje bild till Base64 och lagra i en lista
+        List<String> base64Images = new ArrayList<>();
+        if (listing.getImages() != null && !listing.getImages().isEmpty()) {
+            for (byte[] image : listing.getImages()) {
+                String base64Image = "data:" + listing.getType() + ";base64," +
+                        Base64.getEncoder().encodeToString(image);
+                base64Images.add(base64Image);
+            }
+        }
 
         model.addAttribute("username", username);
         model.addAttribute("listing", listing);
-        model.addAttribute("base64Image", base64Image);
+        model.addAttribute("base64Images", base64Images); // Lägg till listan med bilder
 
         return "listing";
     }
+
 
 }

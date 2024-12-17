@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 @Entity
 public class Listing {
 
@@ -13,15 +15,19 @@ public class Listing {
     @NotBlank
     @Size(min = 5, max = 30, message = "Title must have at least 5 chars")
     private String title;
-    @NotBlank
     private int price;
     @NotBlank
     @Size(min = 10, max = 120, message = "Description must be between 10-120 chars")
     private String description;
     private String type;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "listing_images", joinColumns = @JoinColumn(name = "listing_id"))
     @Lob
-    private byte[] image;
-    private String base64Image;
+    @Column(name = "image")
+    private List<byte[]> images;
+
+    private List<String> base64Image;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -30,12 +36,12 @@ public class Listing {
     public Listing() {
 
     }
-    public Listing(String title, int price, String description, String type, byte[] image) {
+    public Listing(String title, int price, String description, String type, List<byte[]> images) {
         this.title = title;
         this.price = price;
         this.description = description;
         this.type = type;
-        this.image = image;
+        this.images = images;
     }
 
     public Long getId() {
@@ -78,19 +84,19 @@ public class Listing {
         this.type = type;
     }
 
-    public byte[] getImage() {
-        return image;
+    public List<byte[]> getImages() {
+        return images;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setImages(List<byte[]> image) {
+        this.images = image;
     }
 
-    public String getBase64Image() {
+    public List<String> getBase64Image() {
         return base64Image;
     }
 
-    public void setBase64Image(String base64Image) {
+    public void setBase64Image(List<String> base64Image) {
         this.base64Image = base64Image;
     }
 

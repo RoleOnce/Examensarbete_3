@@ -14,10 +14,10 @@
     <p><strong>Description:</strong> <span th:text="${listing.description}"></span></p>
 
     <!-- Visa bilden -->
-    <div th:if="${base64Image}">
-        <img th:src="${base64Image}" alt="Listing Image" style="max-width: 500px;">
+    <div th:each="image : ${base64Images}">
+        <img th:src="${image}" alt="Listing Image" style="max-width: 300px;">
     </div>
-    <div th:if="${base64Image == null}">
+    <div th:if="${base64Images == null}">
         <p>No image available.</p>
     </div>
     <a th:href="@{/}">Back to Homepage</a>

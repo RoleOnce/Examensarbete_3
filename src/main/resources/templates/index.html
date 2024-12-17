@@ -29,10 +29,13 @@
      class="ad-card"
      th:onclick="|window.location.href='/listing/' + ${ad.id}|">
     <h3 th:text="${ad.title}"></h3>
-    <p th:text="${ad.price} + ' ' + kr"></p>
-    <img th:if="${ad.base64Image != null}"
-         th:src="'data:' + ${ad.type} + ';base64,' + ${ad.base64Image}"
-         alt="Ad Image" style="max-width: 200px;">
+    <p th:text="${ad.price} + ' kr'"></p>
+
+    <!-- Iterera över alla bilder -->
+    <div th:if="${ad.base64Image != null}" th:each="image : ${ad.base64Image}">
+        <img th:src="'data:' + ${ad.type} + ';base64,' + ${image}"
+             alt="Ad Image" style="max-width: 200px;">
+    </div>
 </div>
 </body>
 </html>
