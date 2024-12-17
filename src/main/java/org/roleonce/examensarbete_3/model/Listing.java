@@ -1,16 +1,22 @@
 package org.roleonce.examensarbete_3.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Listing {
 
-    // TODO - Ta bort lastName/firstName?? Istället ha inloggade "username" (?)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotBlank
+    @Size(min = 5, max = 30, message = "Title must have at least 5 chars")
     private String title;
+    @NotBlank
     private int price;
+    @NotBlank
+    @Size(min = 10, max = 120, message = "Description must be between 10-120 chars")
     private String description;
     private String type;
     @Lob
