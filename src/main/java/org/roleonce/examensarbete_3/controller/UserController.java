@@ -7,6 +7,7 @@ import org.roleonce.examensarbete_3.authorities.UserRole;
 import org.roleonce.examensarbete_3.model.CustomUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -72,6 +73,27 @@ public class UserController {
             model.addAttribute("roles", UserRole.values());
             return "register";
         }
+        return "redirect:/";
+    }
+
+    @GetMapping("/delete-user")
+    public String deleteUser() {
+
+        return "delete-user";
+    }
+
+    @PostMapping("/delete-user")
+    public String deleteUserPost(@RequestParam Long id, Model model) {
+
+        try {
+            userDAO.deleteById(id);
+            model.addAttribute("successMessage", "User with id " + id + " was successfully deleted ");
+        } catch (EmptyResultDataAccessException e) {
+            model.addAttribute("errorMessage", "User with id " + id + " was not found");
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An error occurred while deleting the user");
+        }
+
         return "redirect:/";
     }
 
