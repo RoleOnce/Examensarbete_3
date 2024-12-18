@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Listing</title>
+</head>
+<body>
+<h1>Delete Listing</h1>
+
+<form th:action="@{/delete-listing}" method="post">
+  <label for="userId">Listing ID:</label>
+  <input type="number" id="userId" name="id" required>
+  <button type="submit">Delete Listing</button>
+</form>
+</body>
+</html>

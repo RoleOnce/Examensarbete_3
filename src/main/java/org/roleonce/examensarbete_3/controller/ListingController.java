@@ -1,9 +1,11 @@
 package org.roleonce.examensarbete_3.controller;
 
+import org.roleonce.examensarbete_3.dao.ListingDAO;
 import org.roleonce.examensarbete_3.model.Listing;
 import org.roleonce.examensarbete_3.model.CustomUser;
 import org.roleonce.examensarbete_3.service.ListingService;
 import org.roleonce.examensarbete_3.service.UserService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +21,12 @@ public class ListingController {
 
     private final UserService userService;
     private final ListingService listingService;
+    private final ListingDAO listingDAO;
 
-    public ListingController(UserService userService, ListingService listingService) {
+    public ListingController(UserService userService, ListingService listingService, ListingDAO listingDAO) {
         this.userService = userService;
         this.listingService = listingService;
+        this.listingDAO = listingDAO;
     }
 
     @GetMapping("/")
@@ -134,5 +138,24 @@ public class ListingController {
         return "listing";
     }
 
+    @GetMapping("/delete-listing")
+    public String deleteListing(){
+
+        return "delete-listing";
+    }
+
+    @PostMapping("/delete-listing")
+    public String deleteListing(@RequestParam Long id, Model model) {
+
+        try {
+            listingDAO.deleteById(id);
+            model.addAttribute("successMessage", "Listing with id " + id + " was successfully deleted ");
+        } catch (EmptyResultDataAccessException e) {
+            model.addAttribute("errorMessage", "Listing with id " + id + " was not found");
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An error occurred while deleting the listing");
+        }
+        return "redirect:/";
+    }
 
 }
