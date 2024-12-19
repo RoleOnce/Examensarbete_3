@@ -3,9 +3,8 @@ package org.roleonce.examensarbete_3.controller;
 import org.roleonce.examensarbete_3.dao.ListingDAO;
 import org.roleonce.examensarbete_3.model.Listing;
 import org.roleonce.examensarbete_3.model.CustomUser;
-import org.roleonce.examensarbete_3.service.ListingService;
 import org.roleonce.examensarbete_3.service.UserService;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,24 +14,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ListingController {
 
     private final UserService userService;
-    private final ListingService listingService;
     private final ListingDAO listingDAO;
 
-    public ListingController(UserService userService, ListingService listingService, ListingDAO listingDAO) {
+    public ListingController(UserService userService, ListingDAO listingDAO) {
         this.userService = userService;
-        this.listingService = listingService;
         this.listingDAO = listingDAO;
     }
 
     @GetMapping("/")
     public String homePage(Model model) {
 
-        List<Listing> listings = listingService.getAllListings();
+        List<Listing> listings = listingDAO.findAll();
 
         for (Listing ad : listings) {
             if (ad.getImages() != null && !ad.getImages().isEmpty()) {
@@ -49,12 +47,14 @@ public class ListingController {
         return "index";
     }
 
+    // This endpoint is used to list an item
     @GetMapping("/upload")
     public String showUploadForm() {
 
         return "upload";
     }
 
+    // This endpoint is used to list an item
     @PostMapping("/upload")
     public String createListing(
             @RequestParam("files") List<MultipartFile> files,
@@ -79,7 +79,7 @@ public class ListingController {
             }
             listing.setImages(imageList);
 
-            listingService.saveListing(listing);
+            listingDAO.save(listing);
             return "redirect:/";
 
         } catch (IOException e) {
@@ -88,6 +88,7 @@ public class ListingController {
         }
     }
 
+    // This endpoint shows the listings of the user who´s logged in at the moment
     @GetMapping("/listings")
     public String getListingsForUser(Model model) {
         CustomUser loggedInUser = userService.getLoggedInUser();
@@ -95,7 +96,8 @@ public class ListingController {
             return "error";
         }
 
-        List<Listing> listings = listingService.getListingByUser(loggedInUser);
+        // TODO - Måste fixa html filen
+        List<Listing> listings = listingDAO.getListingByUser(loggedInUser);
         for (Listing ad : listings) {
             if (ad.getImages() != null) {
                 List<String> base64Images = new ArrayList<>();
@@ -111,15 +113,22 @@ public class ListingController {
         return "my-listings"; // Visar annonser för inloggad användare
     }
 
+    // This endpoint shows listings individually
     @GetMapping("/listing/{id}")
-    public String getListingPage(@PathVariable Long id, Model model) {
+    public String getListingPage(@PathVariable Long id, Model model, Authentication authentication) {
 
-        Listing listing = listingService.getListingById(id);
-        if (listing == null) {
+        Optional<Listing> optionalListing = listingDAO.findById(id);
+        if (optionalListing.isEmpty()) {
             return "error";
         }
 
+        Listing listing = optionalListing.get();
+
         String username = userService.getUsernameByListingId(id);
+        String currentUser = authentication.getName();
+        boolean isOwner = currentUser.equals(username);
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
 
         // Konvertera varje bild till Base64 och lagra i en lista
         List<String> base64Images = new ArrayList<>();
@@ -133,29 +142,42 @@ public class ListingController {
 
         model.addAttribute("username", username);
         model.addAttribute("listing", listing);
-        model.addAttribute("base64Images", base64Images); // Lägg till listan med bilder
+        model.addAttribute("base64Images", base64Images);
+        model.addAttribute("canDelete", isAdmin || isOwner);
 
         return "listing";
     }
 
+    // This endpoint deletes listings with id´s
+    // --> This endpoint might be deleted soon.. <--
     @GetMapping("/delete-listing")
     public String deleteListing(){
 
         return "delete-listing";
     }
 
-    @PostMapping("/delete-listing")
-    public String deleteListing(@RequestParam Long id, Model model) {
+    // This endpoint deletes listings individually in "listing/{id}"-GET-endpoint with used of its id
+    @PostMapping("/listing/{id}/delete")
+    public String deleteListingPost(@PathVariable Long id, Boolean confirmed, Authentication authentication) {
 
-        try {
-            listingDAO.deleteById(id);
-            model.addAttribute("successMessage", "Listing with id " + id + " was successfully deleted ");
-        } catch (EmptyResultDataAccessException e) {
-            model.addAttribute("errorMessage", "Listing with id " + id + " was not found");
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", "An error occurred while deleting the listing");
+        Optional<Listing> optionalListing = listingDAO.findById(id);
+        if (optionalListing.isEmpty()) {
+            return "error";
         }
-        return "redirect:/";
+
+        Listing listing = optionalListing.get();
+
+        String username = authentication.getName();
+        boolean isOwner = username.equals(listing.getOwner().getUsername());
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+
+        if (isOwner || isAdmin) {
+            listingDAO.deleteById(id);
+            return "redirect:/";
+        } else {
+            return "error";
+        }
     }
 
 }

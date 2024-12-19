@@ -1,5 +1,6 @@
 package org.roleonce.examensarbete_3.dao;
 
+import org.roleonce.examensarbete_3.model.CustomUser;
 import org.roleonce.examensarbete_3.model.Listing;
 
 import java.util.List;
@@ -10,7 +11,8 @@ public interface ListingDAOInt {
     Optional<Listing> findByTitle(String title);
     void save(Listing listing);
     List<Listing> findAll();
-    Optional<Listing> findById(int id);
+    List<Listing> getListingByUser(CustomUser user);
+    Optional<Listing> findById(Long id);
     void deleteById(Long id);
 
 }
