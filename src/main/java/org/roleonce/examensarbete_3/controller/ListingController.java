@@ -144,6 +144,7 @@ public class ListingController {
         model.addAttribute("listing", listing);
         model.addAttribute("base64Images", base64Images);
         model.addAttribute("canDelete", isAdmin || isOwner);
+        model.addAttribute("canEdit", isAdmin || isOwner);
 
         return "listing";
     }
@@ -199,7 +200,8 @@ public class ListingController {
     @PostMapping("/listing/{id}/edit")
     public String saveEditListing(@PathVariable Long id,
                                   @RequestParam String description,
-                                  @RequestParam("files") List<MultipartFile> files) throws IOException {
+                                  @RequestParam("files") List<MultipartFile> files,
+                                  Authentication authentication) throws IOException {
 
         Optional<Listing> optionalListing = listingDAO.findById(id);
         if (optionalListing.isEmpty()) {
