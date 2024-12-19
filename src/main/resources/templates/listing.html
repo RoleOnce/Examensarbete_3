@@ -30,6 +30,9 @@
         <p>No image available.</p>
     </div>
 
+    <a th:href="@{/listing/{id}/edit(id=${listing.id})}">Edit Listing</a>
+
+
     <div th:if="${canDelete}">
         <form th:action="@{/listing/{id}/delete(id=${listing.id})}" method="post" onsubmit="confirmDeletion(event)">
             <button type="submit">Delete Listing</button>

@@ -110,7 +110,7 @@ public class ListingController {
         }
 
         model.addAttribute("listings", listings);
-        return "my-listings"; // Visar annonser för inloggad användare
+        return "my-listings";
     }
 
     // This endpoint shows listings individually
@@ -158,7 +158,7 @@ public class ListingController {
 
     // This endpoint deletes listings individually in "listing/{id}"-GET-endpoint with used of its id
     @PostMapping("/listing/{id}/delete")
-    public String deleteListingPost(@PathVariable Long id, Boolean confirmed, Authentication authentication) {
+    public String deleteListingPost(@PathVariable Long id, Authentication authentication) {
 
         Optional<Listing> optionalListing = listingDAO.findById(id);
         if (optionalListing.isEmpty()) {
@@ -178,6 +178,51 @@ public class ListingController {
         } else {
             return "error";
         }
+    }
+
+    // This endpoint is used to edit an already existing listing
+    @GetMapping("/listing/{id}/edit")
+    public String editListing(@PathVariable Long id, Model model) {
+        Optional<Listing> optionalListing = listingDAO.findById(id);
+        if (optionalListing.isEmpty()) {
+            return "error";
+        }
+
+        Listing listing = optionalListing.get();
+
+        model.addAttribute("listing", listing);
+
+        return "edit-listing";
+    }
+
+    // This endpoint is used to save the updates on the listing
+    @PostMapping("/listing/{id}/edit")
+    public String saveEditListing(@PathVariable Long id,
+                                  @RequestParam String description,
+                                  @RequestParam("files") List<MultipartFile> files) throws IOException {
+
+        Optional<Listing> optionalListing = listingDAO.findById(id);
+        if (optionalListing.isEmpty()) {
+            return "error";
+        }
+
+        Listing listing = optionalListing.get();
+        listing.setDescription(description);
+
+        List<byte[]> updateImages = new ArrayList<>();
+        for (MultipartFile file : files) {
+            if (!file.isEmpty()) {
+                updateImages.add(file.getBytes());
+            }
+        }
+
+        if (!updateImages.isEmpty()) {
+            listing.setImages(updateImages);
+        }
+
+        listingDAO.save(listing);
+
+        return "redirect:/listing/" + id;
     }
 
 }
