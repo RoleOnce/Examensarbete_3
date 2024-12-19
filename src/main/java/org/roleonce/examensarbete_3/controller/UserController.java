@@ -58,7 +58,7 @@ public class UserController {
                     userDTO.username(),
                     passwordEncoder.encode(userDTO.password()),
                     userDTO.email(),
-                    userDTO.userRole() != null ? userDTO.userRole() : UserRole.USER,
+                    UserRole.USER,
                     true,
                     true,
                     true,
