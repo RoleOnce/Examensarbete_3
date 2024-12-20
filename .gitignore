@@ -38,3 +38,4 @@ out/
 
 ### Sensitive Information ###
 .env
+src/main/resources/mykeystore.p12
