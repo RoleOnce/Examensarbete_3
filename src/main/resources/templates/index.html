@@ -11,20 +11,17 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-
-        .ad-card:hover {
-            background-color: #f9f9f9;
-        }
     </style>
 </head>
 <body>
 <a sec:authorize="isAnonymous()" th:href="@{/login}">Sign In</a>
+<a sec:authorize="isAnonymous()" th:href="@{/register}">Create Account</a>
 <a sec:authorize="isAuthenticated()" th:href="@{/upload}">List an item</a>
 <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Sign Out</a>
 <p sec:authorize="isAuthenticated()">
-    Logged in as: <span th:text="${#authentication.name}"></span>
+    Signed in as: <span th:text="${#authentication.name}"></span>
 </p>
-<h1>All Listings</h1>
+<h1>Listings For Sale</h1>
 <div th:each="ad : ${listings}"
      class="ad-card"
      th:onclick="|window.location.href='/listing/' + ${ad.id}|">

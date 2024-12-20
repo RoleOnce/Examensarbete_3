@@ -5,32 +5,36 @@
     <title>Register</title>
 </head>
 <body>
-<h1>Register User</h1>
+<h1>Create account for free</h1>
 <form th:action="@{/register}" th:object="${userDTO}" method="post">
     <label>
-        First Name
+        First Name <br>
         <input type="text" name="firstName" th:field="*{firstName}">
-    </label>
+    </label> <br><br>
     <label>
-        Last Name
+        Last Name <br>
         <input type="text" name="lastName" th:field="*{lastName}">
-    </label>
+    </label> <br><br>
     <label>
-        Username
+        Username <br>
         <input type="text" name="username" th:field="*{username}">
-    </label>
+    </label> <br><br>
     <div th:if="${usernameError}" th:text="${usernameError}" class="error"></div>
 
     <label>
-        Password
+        Password <br>
         <input type="password" name="password" th:field="*{password}">
-    </label>
+    </label> <br><br>
     <label>
-        Email
+        Email <br>
         <input type="email" name="email" th:field="*{email}">
-    </label>
+    </label> <br><br>
 
     <button type="submit">Register</button>
+
+    <br><br>
+
+    <a th:href="@{/}">Back to Homepage</a>
 
 </form>
 </body>

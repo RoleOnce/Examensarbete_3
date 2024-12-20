@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Logout</title>
 </head>
 <body>
 
-<h1>Do you want to sign out?</h1>
+<h1 sec:authorize="isAuthenticated()">Hope to see you soon <span th:text="${#authentication.name}"></span>!</h1>
 
 <form th:action="@{/custom-logout}" method="post">
     <button type="submit">Sign Out</button>
 </form>
+
+<br><br>
+
+<a th:href="@{/}">Back to Homepage</a>
 
 </body>
 </html>

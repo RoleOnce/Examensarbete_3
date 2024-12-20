@@ -6,22 +6,24 @@
 </head>
 <body>
 <h1>Edit Listing</h1>
+
 <form th:action="@{/listing/{id}/edit(id=${listing.id})}" method="post" enctype="multipart/form-data">
     <label for="title">Title:</label><br>
     <input type="text" id="title" name="title" th:value="${listing.title}" required><br><br>
 
-    <label for="description">Description:</label><br>
-    <textarea id="description" name="description" rows="4" cols="50" th:text="${listing.description}"></textarea><br><br>
-
     <label for="price">Price:</label><br>
     <input type="number" id="price" name="price" th:value="${listing.price}" required><br><br>
 
-    <!-- Hantera bildinmatning om det behövs -->
+    <label for="description">Description:</label><br>
+    <textarea id="description" name="description" rows="4" cols="50" th:text="${listing.description}"></textarea><br><br>
+
     <label for="images">Upload Images:</label><br>
     <input type="file" id="images" name="files" accept="image/*" multiple><br><br>
 
     <button type="submit">Save Changes</button>
-</form>
+</form><br>
+
 <a th:href="@{/listing/{id}(id=${listing.id})}">Cancel</a>
+
 </body>
 </html>

@@ -5,27 +5,31 @@
     <title>Create a listing</title>
 </head>
 <body>
-<h1>Create a listing</h1>
+<h1>Create listing</h1>
 <form action="/upload" method="post" enctype="multipart/form-data">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
     <label>
-        Title:
+        Title:<br>
         <input type="text" name="title" required>
-    </label>
+    </label><br><br>
     <label>
-        Price:
+        Price:<br>
         <input type="number" name="price" required>
-    </label>
+    </label><br><br>
     <label>
-        Description:
+        Description:<br>
         <textarea name="description" required></textarea>
-    </label>
+    </label><br><br>
     <label>
-        Upload Images:
+        Upload Images:<br><br>
         <input type="file" name="files" accept="image/*" multiple required>
-    </label>
+    </label><br><br>
     <button type="submit">Create Listing</button>
 </form>
+
+<br><br>
+
+<a th:href="@{/}">Back to Homepage</a>
 
 </body>
 </html>
