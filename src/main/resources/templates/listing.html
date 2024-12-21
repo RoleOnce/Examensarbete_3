@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Listing Details</title>
@@ -13,38 +14,69 @@
             }
         }
     </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/css/output.css" rel="stylesheet">
 </head>
 <body>
-<h1>Listing Details</h1>
-<div>
-
-    <div th:each="image : ${base64Images}">
-        <img th:src="${image}" alt="Listing Image" style="max-width: 300px;">
+<nav class="bg-white shadow-lg p-5">
+    <div class="container mx-auto flex flex-col sm:flex-row space-y-2 justify-between items-center">
+        <div class="text-xl font-bold text-gray-800">Marketplace</div>
+        <div class="space-x-2">
+            <a class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500" th:href="@{/}">Home</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/login}"
+               class="text-blue-600 hover:text-blue-800">Sign In</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/register}"
+               class="text-blue-600 hover:text-blue-800">Create Account</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/upload}"
+               class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500">List an item</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
+               class="bg-red-600 text-white hover:bg-red-800 px-4 py-2 rounded transition-colors">Sign Out</a>
+        </div>
     </div>
-    <div th:if="${base64Images == null}">
-        <p>No image available.</p>
+</nav>
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Listing Details</h1>
+
+    <div class="flex flex-col lg:flex-row flex-wrap gap-4 justify-center items-center">
+        <div th:each="image : ${base64Images}" class="w-full lg:w-auto">
+            <img th:src="${image}" alt="Listing Image" class="lg:max-w-[900px] h-auto object-cover rounded-lg">
+        </div>
+        <div th:if="${base64Images == null}" class="text-center">
+            <p>No image available.</p>
+        </div>
     </div>
 
-    <h1><strong> <span th:text="${listing.title}"></span></strong></h1>
-    <h3><span th:text="${listing.price} + ' ' + kr"></span></h3>
-    <p><strong>Description:</strong> <br> <span th:text="${listing.description}"></span></p>
-    <p><strong>Sold By:</strong> <br> <span th:text="${username}"></span></p>
+    <div class="space-y-4 mt-8">
+        <h2 class="text-3xl font-bold" th:text="${listing.title}"></h2>
+        <p class="text-2xl font-semibold text-gray-900" th:text="${listing.price} + ' kr'"></p>
 
-    <div th:if="${canEdit}">
-        <form th:action="@{/listing/{id}/edit(id=${listing.id})}" method="get">
-            <button type="submit">Edit Listing</button>
-        </form>
+        <div class="mt-6">
+            <h3 class="text-2xl mb-2">Description</h3>
+            <p class="text-gray-700 whitespace-pre-line" th:text="${listing.description}"></p>
+        </div>
+
+        <div class="mt-6">
+            <h3 class="text-2xl font-semibold mb-2">Sold By</h3>
+            <p class="text-gray-700" th:text="${username}"></p>
+        </div>
     </div>
-    <div th:if="${canDelete}">
-        <form th:action="@{/listing/{id}/delete(id=${listing.id})}" method="post" onsubmit="confirmDeletion(event)">
-            <button type="submit">Delete Listing</button>
-        </form>
+
+    <div class="mt-8 space-y-2">
+        <div th:if="${canEdit}">
+            <form th:action="@{/listing/{id}/edit(id=${listing.id})}" method="get">
+                <button class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors" type="submit">
+                    Edit Listing
+                </button>
+            </form>
+        </div>
+        <div th:if="${canDelete}">
+            <form th:action="@{/listing/{id}/delete(id=${listing.id})}" method="post" onsubmit="confirmDeletion(event)">
+                <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-800 transition-colors" type="submit">
+                    Delete Listing
+                </button>
+            </form>
+        </div>
     </div>
-
-    <br><br>
-
-    <a th:href="@{/}">Back to Homepage</a>
-
 </div>
 </body>
 </html>
