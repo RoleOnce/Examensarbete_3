@@ -200,6 +200,8 @@ public class ListingController {
     @PostMapping("/listing/{id}/edit")
     public String saveEditListing(@PathVariable Long id,
                                   @RequestParam String description,
+                                  @RequestParam String title,
+                                  @RequestParam int price,
                                   @RequestParam("files") List<MultipartFile> files,
                                   Authentication authentication) throws IOException {
 
@@ -210,6 +212,8 @@ public class ListingController {
 
         Listing listing = optionalListing.get();
         listing.setDescription(description);
+        listing.setTitle(title);
+        listing.setPrice(price);
 
         List<byte[]> updateImages = new ArrayList<>();
         for (MultipartFile file : files) {
