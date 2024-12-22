@@ -2,19 +2,35 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Logout</title>
+    <title>Sign out</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+<nav class="bg-white shadow-lg p-5">
+    <div class="container mx-auto flex flex-col sm:flex-row space-y-2 justify-between items-center">
+        <div class="text-xl font-bold text-gray-800">Marketplace</div>
+        <div class="space-x-2">
+            <a class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500" th:href="@{/}">Home</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/login}"
+               class="text-blue-600 hover:text-blue-800">Sign In</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/register}"
+               class="text-blue-600 hover:text-blue-800">Create Account</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/upload}"
+               class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500">List an item</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
+               class="bg-red-600 text-white hover:bg-red-800 px-4 py-2 rounded transition-colors">Sign Out</a>
+        </div>
+    </div>
+</nav>
 
-<h1 sec:authorize="isAuthenticated()">Hope to see you soon <span th:text="${#authentication.name}"></span>!</h1>
-
-<form th:action="@{/custom-logout}" method="post">
-    <button type="submit">Sign Out</button>
-</form>
-
-<br><br>
-
-<a th:href="@{/}">Back to Homepage</a>
-
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-center text-3xl font-bold mb-8">
+        Are you sure you want to sign out <span th:text="${#authentication.name}"></span>?</h1>
+    <form class="text-center" th:action="@{/custom-logout}" method="post">
+        <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-800 transition-colors" type="submit">
+            Sign Out
+        </button>
+    </form>
+</div>
 </body>
 </html>

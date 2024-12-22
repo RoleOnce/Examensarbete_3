@@ -1,5 +1,6 @@
 package org.roleonce.examensarbete_3.controller;
 
+import jakarta.validation.Valid;
 import org.roleonce.examensarbete_3.dao.ListingDAO;
 import org.roleonce.examensarbete_3.model.Listing;
 import org.roleonce.examensarbete_3.model.CustomUser;
@@ -7,6 +8,7 @@ import org.roleonce.examensarbete_3.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,12 +61,21 @@ public class ListingController {
     public String createListing(
             @RequestParam("files") List<MultipartFile> files,
             @RequestParam("description") String description,
-            @ModelAttribute Listing listing) {
+            @ModelAttribute @Valid Listing listing,
+            BindingResult bindingResult,
+            Model model) {
 
         CustomUser loggedInUser = userService.getLoggedInUser(); // Hämta inloggad användare
 
         if (loggedInUser == null) {
             return "error";
+        }
+
+        if (bindingResult.hasErrors()) {
+            // Lägg till fel och andra attribut till modellen för att återvända till formuläret
+            model.addAttribute("listing", listing);
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "upload"; // Återvänd till formulärsidan
         }
 
         try {

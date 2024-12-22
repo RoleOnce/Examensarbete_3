@@ -1,40 +1,81 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Sign in</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <h1>Login</h1>
+<nav class="bg-white shadow-lg p-5">
+    <div class="container mx-auto flex flex-col sm:flex-row space-y-2 justify-between items-center">
+        <div class="text-xl font-bold text-gray-800">Marketplace</div>
+        <div class="space-x-2">
+            <a class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500" th:href="@{/}">Home</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/login}"
+               class="text-blue-600 hover:text-blue-800">Sign In</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/register}"
+               class="text-blue-600 hover:text-blue-800">Create Account</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/upload}"
+               class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500">List an item</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
+               class="bg-red-600 text-white hover:bg-red-800 px-4 py-2 rounded transition-colors">Sign Out</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Sign in</h1>
     <form th:action="@{/login}" method="post">
-        <label>
-            Username
-            <input type="text" name="username" placeholder="username" required autofocus>
-        </label>
-        <label>
-            Password
-            <input type="password" name="password" placeholder="password.." required>
-        </label>
-        <label>
-            Remember me
-            <input type="checkbox" name="remember-me">
-        </label>
+        <div class="space-y-6">
+            <div>
+                <label class="text-lg font-semibold mb-2">
+                    Username
+                </label> <br>
+                <input
+                        type="text"
+                        name="username"
+                        placeholder="username"
+                        required
+                        autofocus
+                        class="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+            </div>
+            <div>
+                <label class="text-lg font-semibold mb-2">
+                    Password
+                </label> <br>
+                <input
+                        type="password"
+                        name="password"
+                        placeholder="password.."
+                        required
+                        class="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+            </div>
+            <div>
+                <label class="text-lg font-semibold mb-2">
+                    Remember me
+                </label>
+                <input
+                        type="checkbox"
+                        name="remember-me">
+            </div>
 
-        <button type="submit">Login</button>
+            <button class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors" type="submit">
+                Sign in
+            </button>
 
-        <div th:if="${param.error}" >
-            <p>
-                [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
-            </p>
+            <div th:if="${param.error}">
+                <p>
+                    [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
+                </p>
+            </div>
+
+            <div th:if="${param.logout}">
+                <p>
+                    You have been signed out
+                </p>
+            </div>
         </div>
-
-        <div th:if="${param.logout}" >
-            <p>
-                You have logged out
-            </p>
-        </div>
-
     </form>
-
+</div>
 </body>
 </html>
