@@ -1,35 +1,83 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Create a listing</title>
+    <title>Upload a listing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<h1>Create listing</h1>
-<form action="/upload" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-    <label>
-        Title:<br>
-        <input type="text" name="title" required>
-    </label><br><br>
-    <label>
-        Price:<br>
-        <input type="number" name="price" required>
-    </label><br><br>
-    <label>
-        Description:<br>
-        <textarea name="description" required></textarea>
-    </label><br><br>
-    <label>
-        Upload Images:<br><br>
-        <input type="file" name="files" accept="image/*" multiple required>
-    </label><br><br>
-    <button type="submit">Create Listing</button>
-</form>
 
-<br><br>
+<nav class="bg-white shadow-lg p-5">
+    <div class="container mx-auto flex flex-col sm:flex-row space-y-2 justify-between items-center">
+        <div class="text-xl font-bold text-gray-800">Marketplace</div>
+        <div class="space-x-2">
+            <a class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500" th:href="@{/}">Home</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/login}"
+               class="text-blue-600 hover:text-blue-800">Sign In</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/register}"
+               class="text-blue-600 hover:text-blue-800">Create Account</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/upload}"
+               class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500">List an item</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
+               class="bg-red-600 text-white hover:bg-red-800 px-4 py-2 rounded transition-colors">Sign Out</a>
+        </div>
+    </div>
+</nav>
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Create listing</h1>
 
-<a th:href="@{/}">Back to Homepage</a>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+        <div class="space-y-6">
+            <div class="flex flex-col">
+                <label class="text-lg font-semibold mb-2">
+                    Title <br>
+                    <input
+                            type="text"
+                            name="title"
+                            required
+                            class="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+                </label>
+            </div>
+            <div>
+                <label class="text-lg font-semibold mb-2">
+                    Price <br>
+                    <input
+                            type="number"
+                            name="price"
+                            required
+                            class="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+                </label>
+            </div>
+            <div>
+                <label class="text-lg font-semibold mb-2">
+                    Description <br>
+                    <textarea
+                            name="description"
+                            required
+                            rows="4"
+                            class="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+                    </textarea>
+                </label>
+            </div>
+            <div>
+                <label class="text-lg font-semibold mb-2">
+                    Upload Images <br>
+                    <input
+                            type="file"
+                            name="files"
+                            accept="image/*"
+                            multiple
+                            required
+                            class="mt-2">
+                </label>
+            </div>
 
+            <button class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors" type="submit">
+                Create Listing
+            </button>
+        </div>
+    </form>
+</div>
 </body>
 </html>
