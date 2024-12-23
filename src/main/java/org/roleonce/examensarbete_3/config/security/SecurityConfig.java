@@ -27,7 +27,7 @@ public class SecurityConfig {
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/register", "/login", "/advertisement/**").permitAll()
+                        .requestMatchers("/", "/register", "/login", "/listing/**").permitAll()
                         .requestMatchers("/logout", "/upload").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/delete-listing", "/delete-user").hasRole("ADMIN")
                         .requestMatchers("/output.css").permitAll()
@@ -35,7 +35,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
 
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
-                        .loginPage("/login")
+                        .loginPage("/login"
+                                )
                 )
 
                 // Tar med säkerhet bort cookies, autentiseringsinfo och
