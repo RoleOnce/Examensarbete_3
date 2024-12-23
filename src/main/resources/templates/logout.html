@@ -10,13 +10,13 @@
     <div class="container mx-auto flex flex-col sm:flex-row space-y-2 justify-between items-center">
         <div class="text-xl font-bold text-gray-800">Marketplace</div>
         <div class="space-x-2">
-            <a class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500" th:href="@{/}">Home</a>
+            <a class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors" th:href="@{/}">Home</a>
             <a sec:authorize="isAnonymous()" th:href="@{/login}"
-               class="text-blue-600 hover:text-blue-800">Sign In</a>
+               class="text-blue-600 hover:text-blue-800 transition-colors">Sign In</a>
             <a sec:authorize="isAnonymous()" th:href="@{/register}"
-               class="text-blue-600 hover:text-blue-800">Create Account</a>
+               class="text-blue-600 hover:text-blue-800 transition-colors">Create Account</a>
             <a sec:authorize="isAuthenticated()" th:href="@{/upload}"
-               class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500">List an item</a>
+               class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors">List an item</a>
             <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
                class="bg-red-600 text-white hover:bg-red-800 px-4 py-2 rounded transition-colors">Sign Out</a>
         </div>

@@ -1,29 +1,39 @@
 package org.roleonce.examensarbete_3.controller;
 
 import jakarta.validation.Valid;
+import org.roleonce.examensarbete_3.dao.ListingDAO;
 import org.roleonce.examensarbete_3.dao.UserDAO;
 import org.roleonce.examensarbete_3.dto.UserRegistrationDTO;
 import org.roleonce.examensarbete_3.authorities.UserRole;
 import org.roleonce.examensarbete_3.model.CustomUser;
+import org.roleonce.examensarbete_3.model.Listing;
+import org.roleonce.examensarbete_3.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 public class UserController {
 
     private final PasswordEncoder passwordEncoder;
     private final UserDAO userDAO;
+    private final ListingDAO listingDAO;
+    private final UserService userService;
 
     @Autowired
-    public UserController(PasswordEncoder passwordEncoder, UserDAO userDAO) {
+    public UserController(PasswordEncoder passwordEncoder, UserDAO userDAO, ListingDAO listingDAO, UserService userService) {
         this.passwordEncoder = passwordEncoder;
         this.userDAO = userDAO;
+        this.listingDAO = listingDAO;
+        this.userService = userService;
     }
 
     @GetMapping("/register")
