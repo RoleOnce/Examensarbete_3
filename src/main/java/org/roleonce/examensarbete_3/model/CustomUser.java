@@ -43,6 +43,14 @@ public class CustomUser {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Listing> listings = new ArrayList<>();
+/*
+    @OneToMany(mappedBy = "sender")
+    private List<Message> sentMessages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipient")
+    private List<Message> receivedMessages = new ArrayList<>();
+
+ */
 
     // Constructors
     public CustomUser() {

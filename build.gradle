@@ -30,6 +30,8 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'org.springframework.boot:spring-boot-starter-validation:3.3.3'
     implementation group: 'me.paulschwarz', name: 'spring-dotenv', version: '4.0.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.3.0'
+
 }
 
 tasks.named('test') {

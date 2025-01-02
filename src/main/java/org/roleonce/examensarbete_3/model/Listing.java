@@ -17,7 +17,7 @@ public class Listing {
     private String title;
     private int price;
     @NotBlank
-    @Size(min = 10, max = 120, message = "Description must be between 10-120 chars")
+    @Size(min = 10, message = "Description must be between 10-120 chars")
     private String description;
     private String type;
 

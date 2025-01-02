@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inbox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function markAsRead(messageId) {
+            fetch(`/messages/${messageId}/read`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(() => {
+                document.querySelector(`#message-${messageId}`).classList.remove('bg-blue-50');
+            });
+        }
+
+        function deleteMessage(messageId) {
+            if (confirm('Are you sure you want to delete this message?')) {
+                fetch(`/messages/${messageId}`, {
+                    method: 'DELETE'
+                }).then(() => {
+                    document.querySelector(`#message-${messageId}`).remove();
+                });
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">Inbox</h1>
+        <div class="space-x-4">
+            <a href="/messages/inbox" class="font-medium text-blue-600">Inbox</a>
+            <a href="/messages/sent" class="font-medium text-gray-600">Sent Messages</a>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow">
+        <div th:if="${#lists.isEmpty(messages)}" class="p-6 text-center text-gray-500">
+            No messages in your inbox
+        </div>
+
+        <div th:each="message : ${messages}" th:id="'message-' + ${message.id}"
+             th:class="${message.read ? 'border-b p-4' : 'border-b p-4 bg-blue-50'}">
+            <div class="flex justify-between items-start">
+                <div class="flex-1">
+                    <div class="flex items-center space-x-2">
+                        <span class="font-medium" th:text="${message.sender.username}"></span>
+                        <span class="text-sm text-gray-500"
+                              th:text="${#temporals.format(message.sentAt, 'dd MMM yyyy HH:mm')}"></span>
+                    </div>
+                    <h3 class="font-medium mt-1" th:text="${message.subject}"></h3>
+                    <p class="text-gray-600 mt-2" th:text="${message.content}"></p>
+                </div>
+                <div class="flex space-x-2">
+                    <button th:if="${!message.read}"
+                            th:onclick="'markAsRead(' + ${message.id} + ')'"
+                            class="text-blue-600 hover:text-blue-800">
+                        Mark as read
+                    </button>
+                    <button th:onclick="'deleteMessage(' + ${message.id} + ')'"
+                            class="text-red-600 hover:text-red-800">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

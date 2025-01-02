@@ -136,6 +136,7 @@ public class ListingController {
         Listing listing = optionalListing.get();
 
         String username = userService.getUsernameByListingId(id);
+        String email = userService.getEmailByListingId(id);
         String currentUser = authentication.getName();
         boolean isOwner = currentUser.equals(username);
         boolean isAdmin = authentication.getAuthorities().stream()
@@ -151,6 +152,7 @@ public class ListingController {
             }
         }
 
+        model.addAttribute("email", email);
         model.addAttribute("username", username);
         model.addAttribute("listing", listing);
         model.addAttribute("base64Images", base64Images);
