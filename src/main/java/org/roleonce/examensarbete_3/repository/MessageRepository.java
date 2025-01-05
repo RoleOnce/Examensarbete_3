@@ -1,5 +1,5 @@
 package org.roleonce.examensarbete_3.repository;
-/*
+
 import org.roleonce.examensarbete_3.model.CustomUser;
 import org.roleonce.examensarbete_3.model.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,9 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
-    List<Message> findByRecipientOrderBySentAtDesc(CustomUser recipient);
-    List<Message> findBySenderOrderBySentAtDesc(CustomUser sender);
+    List<Message> findByRecipientOrderBySentAtDesc(Optional<CustomUser> recipient);
+    List<Message> findBySenderOrderBySentAtDesc(Optional<CustomUser> sender);
     long countByRecipientAndReadFalse(CustomUser recipient);
 }
-
- */

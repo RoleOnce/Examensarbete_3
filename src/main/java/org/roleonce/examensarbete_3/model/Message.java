@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-/*
+
 @Entity
 public class Message {
     @Id
@@ -27,8 +27,8 @@ public class Message {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "sent_at")
-    private LocalDateTime sentAt;
+    @Column(name = "timestamp", nullable = false)
+    private LocalDateTime sentAt = LocalDateTime.now();
 
     private boolean read;
 
@@ -37,7 +37,7 @@ public class Message {
         this.recipient = recipient;
         this.subject = subject;
         this.content = content;
-        this.sentAt = sentAt;
+        this.sentAt = LocalDateTime.now();
         this.read = read;
     }
 
@@ -101,5 +101,3 @@ public class Message {
         this.read = read;
     }
 }
-
- */

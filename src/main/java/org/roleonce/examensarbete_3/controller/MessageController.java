@@ -1,5 +1,5 @@
 package org.roleonce.examensarbete_3.controller;
-/*
+
 import org.roleonce.examensarbete_3.model.CustomUser;
 import org.roleonce.examensarbete_3.model.Message;
 import org.roleonce.examensarbete_3.service.MessageService;
@@ -29,18 +29,18 @@ public class MessageController {
 
     @GetMapping("/inbox")
     public String showInbox(Model model, Principal principal) {
-        CustomUser currentUser = userService.findByUsername(principal.getName());
+        Optional<CustomUser> currentUser = userService.findByUsername(principal.getName());
         List<Message> receivedMessages = messageService.getReceivedMessages(currentUser);
         model.addAttribute("messages", receivedMessages);
-        return "messages/inbox";
+        return "inbox";
     }
 
     @GetMapping("/sent")
     public String showSentMessages(Model model, Principal principal) {
-        CustomUser currentUser = userService.findByUsername(principal.getName());
+        Optional<CustomUser> currentUser = userService.findByUsername(principal.getName());
         List<Message> sentMessages = messageService.getSentMessages(currentUser);
         model.addAttribute("messages", sentMessages);
-        return "messages/sent";
+        return "sent";
     }
 
     @PostMapping("/send")
@@ -50,8 +50,8 @@ public class MessageController {
                               Principal principal,
                               RedirectAttributes redirectAttributes) {
         try {
-            CustomUser sender = userService.findByUsername(principal.getName());
-            CustomUser recipient = userService.findById(recipientId);
+            CustomUser sender = messageService.findByUsername(principal.getName());
+            CustomUser recipient = messageService.findById(recipientId);
 
             Message message = new Message();
             message.setSender(sender);
@@ -73,7 +73,7 @@ public class MessageController {
     @ResponseBody
     public ResponseEntity<Void> markAsRead(@PathVariable Long messageId, Principal principal) {
         try {
-            CustomUser currentUser = userService.findByUsername(principal.getName());
+            Optional<CustomUser> currentUser = userService.findByUsername(principal.getName());
             messageService.markAsRead(messageId, currentUser);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -84,7 +84,7 @@ public class MessageController {
     @DeleteMapping("/{messageId}")
     public ResponseEntity<Void> deleteMessage(@PathVariable Long messageId, Principal principal) {
         try {
-            CustomUser currentUser = userService.findByUsername(principal.getName());
+            Optional<CustomUser> currentUser = userService.findByUsername(principal.getName());
             messageService.deleteMessage(messageId, currentUser);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -92,5 +92,3 @@ public class MessageController {
         }
     }
 }
-
- */
