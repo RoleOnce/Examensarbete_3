@@ -41,13 +41,6 @@ public class UserService {
         return listing.getOwner().getUsername();
     }
 
-    public String getEmailByListingId(Long adId) {
-
-        Listing listing = listingRepository.findById(adId).orElseThrow(() -> new IllegalArgumentException("Advertisement not found"));
-
-        return listing.getOwner().getEmail();
-    }
-
     public Optional<CustomUser> findByUsername(String username) {
 
         return userRepository.findByUsername(username);

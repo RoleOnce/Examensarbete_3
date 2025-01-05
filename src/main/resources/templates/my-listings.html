@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>My Listings</title>
 </head>
 <body>
+
+<nav class="bg-white shadow-lg p-5">
+    <div class="container mx-auto flex flex-col sm:flex-row space-y-2 justify-between items-center">
+        <div class="text-xl font-bold text-gray-800">Marketplace</div>
+        <div class="space-x-2">
+            <a class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors" th:href="@{/}">Home</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/login}"
+               class="text-blue-600 hover:text-blue-800 transition-colors">Sign In</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/register}"
+               class="text-blue-600 hover:text-blue-800 transition-colors">Create Account</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/upload}"
+               class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors">List an item</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/messages/inbox}"
+               class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors">Inbox</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
+               class="bg-red-600 text-white hover:bg-red-800 px-4 py-2 rounded transition-colors">Sign Out</a>
+        </div>
+    </div>
+</nav>
+
 <h1>My Listings</h1>
 <div th:each="x : ${listings}">
     <h3 th:text="${x.title}"></h3>

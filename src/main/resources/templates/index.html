@@ -20,6 +20,8 @@
                class="text-blue-600 hover:text-blue-800 transition-colors">Create Account</a>
             <a sec:authorize="isAuthenticated()" th:href="@{/upload}"
                class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors">List an item</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/messages/inbox}"
+               class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors">Inbox</a>
             <a sec:authorize="isAuthenticated()" th:href="@{/logout}"
                class="bg-red-600 text-white hover:bg-red-800 px-4 py-2 rounded transition-colors">Sign Out</a>
         </div>
